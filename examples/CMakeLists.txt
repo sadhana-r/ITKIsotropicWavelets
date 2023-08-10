@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(IsotropicWaveletsExamples)
 
-find_package(ITK REQUIRED COMPONENTS
-  ITKCommon
-  ITKIOImageBase
-  ITKImageGrid
-  ITKImageIntensity
-  ITKImageStatistics
-  IsotropicWavelets
-  ITKImageIO
-  CONFIG
-)
+if(NOT ITK_SOURCE_DIR)
+  find_package(ITK 5.3 REQUIRED COMPONENTS IsotropicWavelets ITKCommon ITKImageGrid ITKImageIntensity ITKImageStatistics ITKImageIO)
+else()
+  # when being built as part of ITK, ITKImageIO and ITKTransformIO
+  # lists of modules are not yet ready, causing a configure error
+  find_package(ITK REQUIRED COMPONENTS IsotropicWavelets ITKCommon ITKImageGrid ITKImageIntensity ITKImageStatistics ITKIOImageBase ITKIONRRD)
+endif()
+
 include(${ITK_USE_FILE})
 include_directories(SYSTEM ${ITK_INCLUDE_DIRS})
 
